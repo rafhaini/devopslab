@@ -34,7 +34,21 @@ jobs:
           organization: rafhainiveronezi
           token: ${SONAR_TOKEN}
 
-    - stage: Deploy in Prod
+    - stage: Deploy in Homologacao
+      name: "Executando deploy em ambiente de homologação"
+      script:
+        - curl devopslab-rafhaini.herokuapp.com || travis_terminate 1;
+      deploy:
+          provider: heroku
+          strategy: api
+          api_key: $HEROKU_API_KEY
+          edge: true
+          app: devopslab-rafhaini-stg
+          on:
+            branch: main
+
+    - stage: Deploy in Producao
+      name: "Executando deploy em ambiente produtivo"
       script: skip
       # Definir o Deploy no Heroku
       deploy:
