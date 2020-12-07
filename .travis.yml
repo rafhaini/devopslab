@@ -10,7 +10,7 @@ dist: xenial
 
 jobs:
   include:
-    - stage: Testes
+    - stage: Unit Test
 
       name: "Testes Unitarios"
       # Instalação de Módulos que são necessários para a Aplicação.
@@ -18,18 +18,23 @@ jobs:
         - pip install flask flask-wtf coverage
       script:  # Defini o script de Teste que deve rodar toda vez que o código for alterado.
         - coverage run test.py || travis_terminate 1;
+
+
+    - stage: Quality Gate
+
+      name: "Teste de qualidade e Seguranca"
+      install:
+          - pip install flask flask-wtf coverage
+      script:
         - coverage report app.py || travis_terminate 1;
         - coverage xml app.py || travis_terminate 1;
-
-    - script:
         - sonar-scanner || travis_terminate 1;
-      name: "Testes de Qualidade e Seguranca"
       addons:
         sonarcloud:
           organization: rafhainiveronezi
           token: ${SONAR_TOKEN}
 
-    - stage: Deploy
+    - stage: Deploy in Prod
       script: skip
       # Definir o Deploy no Heroku
       deploy:
