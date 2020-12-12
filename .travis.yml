@@ -59,3 +59,6 @@ jobs:
         app: devopslab-rafhaini
         on:
           branch: main
+
+notifications:
+  slack: devopstoolsgroup:WhI1qnoxopL0ZB7pJZuIHPjr
